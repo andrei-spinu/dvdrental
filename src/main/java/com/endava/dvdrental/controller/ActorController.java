@@ -42,6 +42,13 @@ public class ActorController {
         return new ResponseEntity<>(addedActor, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Actor> editActor(@RequestBody Actor actor, @PathVariable("id") Integer id){
+        Actor editedActor = actorService.editActorById(actor, id);
+
+        return new ResponseEntity<>(editedActor, HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteActorById(@PathVariable("id") Integer id){
         String message = actorService.deleteActorById(id);

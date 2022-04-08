@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ActorServiceImpl implements ActorService {
@@ -37,7 +38,22 @@ public class ActorServiceImpl implements ActorService {
 
     @Override
     public Actor editActorById(Actor actor, Integer id) {
-        return null;
+        Optional<Actor> newActor = Optional.ofNullable(actor);
+
+        Actor oldActor = actorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(id));
+
+        oldActor.setFirstName(newActor
+                .map(Actor::getFirstName)
+                .orElse(oldActor.getFirstName())
+        );
+        oldActor.setLastName(newActor
+                .map(Actor::getLastName)
+                .orElse(oldActor.getLastName())
+        );
+        oldActor.setLastUpdate();
+
+        return actorRepository.save(oldActor);
     }
 
     @Override

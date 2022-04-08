@@ -58,7 +58,7 @@ public class Actor implements Serializable {
         this.setLastUpdate();
     }
 
-    private void setLastUpdate() {
+    public void setLastUpdate() {
         this.lastUpdate = LocalDateTime.now();
     }
 }
