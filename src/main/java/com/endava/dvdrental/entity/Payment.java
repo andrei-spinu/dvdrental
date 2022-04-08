@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Table(name = "payment")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"rental", "staff", "customer"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Payment implements Serializable {
 
@@ -40,17 +40,17 @@ public class Payment implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rental_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"inventory", "customer", "staff", "paymentSet"})
     private Rental rental;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"address", "store", "rentalSet","paymentSet"})
     private Staff staff;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"store", "address", "rentalSet", "paymentSet"})
     private Customer customer;
 
     public Payment() {

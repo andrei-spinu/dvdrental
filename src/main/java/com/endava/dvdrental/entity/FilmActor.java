@@ -1,8 +1,10 @@
 package com.endava.dvdrental.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,21 +13,25 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "film_actor")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = {"film", "actor"})
 public class FilmActor implements Serializable {
 
     @EmbeddedId
+    @JsonIgnore
     private FilmActorId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("filmId")
     @JoinColumn(name = "film_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"inventorySet", "language", "filmActorSet", "filmCategorySet"})
     private Film film;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("actorId")
     @JoinColumn(name = "actor_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties("filmActorSet")
     private Actor actor;
 
     @Column(name = "last_update")

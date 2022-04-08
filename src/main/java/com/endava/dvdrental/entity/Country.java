@@ -18,7 +18,7 @@ import java.util.Set;
 @Table(name = "country")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "citySet")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Country implements Serializable {
 
@@ -28,22 +28,18 @@ public class Country implements Serializable {
     private Integer id;
 
     @NotNull
-    @Column(name = "country",
-            nullable = false)
+    @Column(name = "country", nullable = false)
     private String countryName;
 
     @NotNull
-    @Column(name = "last_update",
-            nullable = false)
+    @Column(name = "last_update", nullable = false)
     private LocalDateTime lastUpdate;
 
-    @OneToMany(
-            mappedBy = "country",
+    @OneToMany(mappedBy = "country",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
             orphanRemoval = true)
-    @JsonBackReference
-    private Set<City> cities = new HashSet<>();
+    @JsonIgnoreProperties({"addressSet", "country"})
+    private Set<City> citySet = new HashSet<>();
 
     public Country() {
     }

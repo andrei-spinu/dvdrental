@@ -1,8 +1,6 @@
 package com.endava.dvdrental.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +16,7 @@ import java.util.Set;
 @Table(name = "city")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"addressSet", "country"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class City implements Serializable {
 
@@ -28,27 +26,23 @@ public class City implements Serializable {
     private Integer id;
 
     @NotNull
-    @Column(name = "city",
-            nullable = false)
+    @Column(name = "city", nullable = false)
     private String cityName;
 
     @NotNull
-    @Column(name = "last_update",
-            nullable = false)
+    @Column(name = "last_update", nullable = false)
     private LocalDateTime lastUpdate;
 
 
-    @OneToMany(
-            mappedBy = "city",
+    @OneToMany(mappedBy = "city",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
             orphanRemoval = true)
-    @JsonBackReference
-    private Set<Address> addresses = new HashSet<>();
+    @JsonIgnoreProperties({"staffSet", "customerSet", "storeSet", "city"})
+    private Set<Address> addressSet = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties("citySet")
     private Country country;
 
     public City() {

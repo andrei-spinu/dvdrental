@@ -18,7 +18,7 @@ import java.util.Set;
 @Table(name = "rental")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"inventory", "customer", "staff", "paymentSet"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Rental implements Serializable {
     @Id
@@ -41,26 +41,25 @@ public class Rental implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inventory_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"film", "store", "rentalSet"})
     private Inventory inventory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"store", "address", "rentalSet", "paymentSet"})
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"address", "store", "rentalSet","paymentSet"})
     private Staff staff;
 
     @OneToMany(
             mappedBy = "rental",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
             orphanRemoval = true)
-    @JsonBackReference
-    private Set<Payment> payments = new HashSet<>();
+    @JsonIgnoreProperties({"rental", "staff", "customer"})
+    private Set<Payment> paymentSet = new HashSet<>();
 
     public Rental() {
     }

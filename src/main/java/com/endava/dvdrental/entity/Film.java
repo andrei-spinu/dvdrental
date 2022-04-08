@@ -21,7 +21,7 @@ import java.util.Set;
 @Table(name = "film")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"filmCategorySet", "filmActorSet", "inventorySet", "language"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Film implements Serializable {
 
@@ -31,8 +31,7 @@ public class Film implements Serializable {
     private Integer id;
 
     @NotNull
-    @Column(name = "title",
-            nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "description")
@@ -42,25 +41,18 @@ public class Film implements Serializable {
     private Integer releaseYear;
 
     @NotNull
-    @Column(name = "rental_duration",
-            nullable = false)
+    @Column(name = "rental_duration", nullable = false)
     private Short rental_duration;
 
     @NotNull
-    @Column(name = "rental_rate",
-            nullable = false,
-            length = 4,
-            precision = 2)
+    @Column(name = "rental_rate", nullable = false, length = 4, precision = 2)
     private BigDecimal rentalRate;
 
     @Column(name = "length")
     private Short length;
 
     @NotNull
-    @Column(name = "replacement_cost",
-            nullable = false,
-            length = 5,
-            precision = 2)
+    @Column(name = "replacement_cost", nullable = false, length = 5, precision = 2)
     private BigDecimal replacementCost;
 
     @Column(name = "rating")
@@ -71,36 +63,29 @@ public class Film implements Serializable {
             nullable = false)
     private LocalDateTime lastUpdate;
 
-    @OneToMany(
-            mappedBy = "film",
+    @OneToMany(mappedBy = "film",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    @JsonBackReference
-    private Set<FilmCategory> categories = new HashSet<>();
+            orphanRemoval = true)
+    @JsonIgnoreProperties({"film"})
+    private Set<FilmCategory> filmCategorySet = new HashSet<>();
 
-    @OneToMany(
-            mappedBy = "film",
+    @OneToMany(mappedBy = "film",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            orphanRemoval = true
-    )
-    @JsonBackReference
-    private Set<FilmActor> actors = new HashSet<>();
+            orphanRemoval = true)
+    @JsonIgnoreProperties({"film"})
+    private Set<FilmActor> filmActorSet = new HashSet<>();
+
+
+    @OneToMany(mappedBy = "film",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonIgnoreProperties({"film", "store", "rentalSet"})
+    private Set<Inventory> inventorySet = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "language_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties("filmSet")
     private Language language;
-
-    @OneToMany(
-            mappedBy = "film",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            orphanRemoval = true
-    )
-    @JsonBackReference
-    private Set<Inventory> inventories = new HashSet<>();
 
     public Film() {
     }

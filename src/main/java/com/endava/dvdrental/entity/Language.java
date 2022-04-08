@@ -19,7 +19,7 @@ import java.util.Set;
 @Table(name = "language")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "filmSet")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Language implements Serializable {
     @Id
@@ -40,10 +40,9 @@ public class Language implements Serializable {
     @OneToMany(
             mappedBy = "language",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
             orphanRemoval = true)
-    @JsonBackReference
-    private Set<Film> films = new HashSet<>();
+    @JsonIgnoreProperties({"inventorySet", "language", "filmActorSet", "filmCategorySet"})
+    private Set<Film> filmSet = new HashSet<>();
 
     public Language() {
     }

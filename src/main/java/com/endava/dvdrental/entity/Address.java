@@ -1,8 +1,6 @@
 package com.endava.dvdrental.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +16,7 @@ import java.util.Set;
 @Table(name = "address")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"staffSet", "customerSet", "storeSet", "city"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Address implements Serializable {
     @Id
@@ -29,7 +27,7 @@ public class Address implements Serializable {
     @NotNull
     @Column(name = "address",
             nullable = false)
-    private String adddress;
+    private String address;
 
     @Column(name = "address2")
     private String secondAddress;
@@ -37,7 +35,7 @@ public class Address implements Serializable {
     @NotNull
     @Column(name = "district",
             nullable = false)
-    private String distrct;
+    private String district;
 
     @Column(name = "postal_code")
     private String postalCode;
@@ -55,37 +53,34 @@ public class Address implements Serializable {
     @OneToMany(
             mappedBy = "address",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
             orphanRemoval = true)
-    @JsonBackReference
-    private Set<Staff> staff = new HashSet<>();
+    @JsonIgnoreProperties({"address", "store", "rentalSet","paymentSet"})
+    private Set<Staff> staffSet = new HashSet<>();
 
     @OneToMany(
             mappedBy = "address",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true)
-    @JsonBackReference
-    private Set<Customer> customers = new HashSet<>();
+    @JsonIgnoreProperties({"store", "address", "rentalSet", "paymentSet"})
+    private Set<Customer> customerSet = new HashSet<>();
 
     @OneToMany(
             mappedBy = "address",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true)
-    @JsonBackReference
-    private Set<Store> stores = new HashSet<>();
+    @JsonIgnoreProperties({"address", "inventorySet", "staffSet", "customerSet"})
+    private Set<Store> storeSet = new HashSet<>();
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"addressSet", "country"})
     private City city;
-
 
     public Address() {
     }
-
 
 
 }

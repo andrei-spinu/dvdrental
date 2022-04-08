@@ -1,7 +1,5 @@
 package com.endava.dvdrental.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,7 +16,7 @@ import java.util.Set;
 @Table(name = "category")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "filmCategorySet")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Category implements Serializable {
     @Id
@@ -40,8 +38,8 @@ public class Category implements Serializable {
             mappedBy = "category",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @JsonBackReference
-    private Set<FilmCategory> films = new HashSet<>();
+    @JsonIgnoreProperties({"category"})
+    private Set<FilmCategory> filmCategorySet = new HashSet<>();
 
     public Category() {
     }

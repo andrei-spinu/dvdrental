@@ -17,7 +17,7 @@ import java.util.Set;
 @Table(name = "store")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"staffSet", "inventorySet", "customerSet", "address"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Store implements Serializable {
 
@@ -31,29 +31,27 @@ public class Store implements Serializable {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true)
-    @JsonBackReference
-    private Set<Inventory> inventories = new HashSet<>();
+    @JsonIgnoreProperties({"film", "store", "rentalSet"})
+    private Set<Inventory> inventorySet = new HashSet<>();
 
     @OneToMany(
             mappedBy = "store",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
             orphanRemoval = true)
-    @JsonBackReference
+    @JsonIgnoreProperties({"address", "store", "rentalSet","paymentSet"})
     private Set<Staff> staffSet = new HashSet<>();
 
     @OneToMany(
             mappedBy = "store",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
             orphanRemoval = true)
-    @JsonBackReference
-    private Set<Customer> customers = new HashSet<>();
+    @JsonIgnoreProperties({"store", "address", "rentalSet", "paymentSet"})
+    private Set<Customer> customerSet = new HashSet<>();
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"staffSet", "customerSet", "storeSet", "city"})
     private Address address;
 
     public Store() {

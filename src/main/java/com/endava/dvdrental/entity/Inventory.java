@@ -1,8 +1,6 @@
 package com.endava.dvdrental.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +16,7 @@ import java.util.Set;
 @Table(name = "inventory")
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"film", "store", "rentalSet"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Inventory implements Serializable {
 
@@ -33,21 +31,19 @@ public class Inventory implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"inventorySet", "language", "filmActorSet", "filmCategorySet"})
     private Film film;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"address", "inventorySet", "staffSet", "customerSet"})
     private Store store;
 
-    @OneToMany(
-            mappedBy = "inventory",
+    @OneToMany(mappedBy = "inventory",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
             orphanRemoval = true)
-    @JsonBackReference
-    private Set<Rental> rentals = new HashSet<>();
+    @JsonIgnoreProperties({"inventory", "customer", "staff", "paymentSet"})
+    private Set<Rental> rentalSet = new HashSet<>();
 
     public Inventory() {
     }
