@@ -19,7 +19,7 @@ public class RentalController {
     }
 
     @GetMapping
-    public List<Rental> getAll(){
+    public List<Rental> getAll() {
         return repository.findAll();
     }
 

@@ -1,9 +1,7 @@
 package com.endava.dvdrental.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,7 +36,7 @@ public class Store implements Serializable {
             mappedBy = "store",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @JsonIgnoreProperties({"address", "store", "rentalSet","paymentSet"})
+    @JsonIgnoreProperties({"address", "store", "rentalSet", "paymentSet"})
     private Set<Staff> staffSet = new HashSet<>();
 
     @OneToMany(

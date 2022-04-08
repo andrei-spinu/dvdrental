@@ -56,7 +56,7 @@ public class Address implements Serializable {
             mappedBy = "address",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @JsonIgnoreProperties({"address", "store", "rentalSet","paymentSet"})
+    @JsonIgnoreProperties({"address", "store", "rentalSet", "paymentSet"})
     private Set<Staff> staffSet = new HashSet<>();
 
     @OneToMany(

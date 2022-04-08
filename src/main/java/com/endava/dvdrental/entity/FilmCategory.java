@@ -1,9 +1,7 @@
 package com.endava.dvdrental.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,7 +10,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity(name = "FilmCategory")
 @Table(name = "film_category")
@@ -49,7 +46,7 @@ public class FilmCategory implements Serializable {
     public FilmCategory(Category category, Film film) {
         this.category = category;
         this.film = film;
-        this.id = new FilmCategoryId(category.getId(),film.getId());
+        this.id = new FilmCategoryId(category.getId(), film.getId());
         this.setLastUpdate();
     }
 

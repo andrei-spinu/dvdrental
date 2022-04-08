@@ -19,7 +19,7 @@ public class FilmController {
     }
 
     @GetMapping
-    public List<Film> getAll(){
+    public List<Film> getAll() {
         return repository.findAll();
     }
 }

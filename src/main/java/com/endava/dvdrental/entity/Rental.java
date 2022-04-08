@@ -1,8 +1,6 @@
 package com.endava.dvdrental.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -53,7 +51,7 @@ public class Rental implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_id")
-    @JsonIgnoreProperties({"address", "store", "rentalSet","paymentSet"})
+    @JsonIgnoreProperties({"address", "store", "rentalSet", "paymentSet"})
     private Staff staff;
 
     @OneToMany(
