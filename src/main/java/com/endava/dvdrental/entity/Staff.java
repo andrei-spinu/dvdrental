@@ -3,6 +3,7 @@ package com.endava.dvdrental.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -68,6 +69,7 @@ public class Staff implements Serializable {
 
     @Column(name = "last_update",
             nullable = false)
+    @Setter(AccessLevel.NONE)
     private LocalDateTime lastUpdate;
 
     @Column(name = "picture")
@@ -99,5 +101,10 @@ public class Staff implements Serializable {
     private Address address;
 
     public Staff() {
+        this.setLastUpdate();
+    }
+
+    private void setLastUpdate() {
+        this.lastUpdate = LocalDateTime.now();
     }
 }

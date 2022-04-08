@@ -1,6 +1,7 @@
 package com.endava.dvdrental.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class Inventory implements Serializable {
 
     @NotNull
     @Column(name = "last_update")
+    @Setter(AccessLevel.NONE)
     private LocalDateTime lastUpdate;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,5 +48,10 @@ public class Inventory implements Serializable {
     private Set<Rental> rentalSet = new HashSet<>();
 
     public Inventory() {
+        this.setLastUpdate();
+    }
+
+    private void setLastUpdate() {
+        this.lastUpdate = LocalDateTime.now();
     }
 }

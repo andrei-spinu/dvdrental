@@ -2,6 +2,7 @@ package com.endava.dvdrental.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,13 +36,20 @@ public class FilmActor implements Serializable {
     private Actor actor;
 
     @Column(name = "last_update")
+    @Setter(AccessLevel.NONE)
     private LocalDateTime lastUpdate = LocalDateTime.now();
 
     public FilmActor() {
+        this.setLastUpdate();
     }
 
     public FilmActor(Film film, Actor actor) {
         this.film = film;
         this.actor = actor;
+        this.setLastUpdate();
+    }
+
+    private void setLastUpdate() {
+        this.lastUpdate = LocalDateTime.now();
     }
 }

@@ -1,6 +1,7 @@
 package com.endava.dvdrental.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,7 @@ public class City implements Serializable {
 
     @NotNull
     @Column(name = "last_update", nullable = false)
+    @Setter(AccessLevel.NONE)
     private LocalDateTime lastUpdate;
 
 
@@ -46,5 +48,10 @@ public class City implements Serializable {
     private Country country;
 
     public City() {
+        this.setLastUpdate();
+    }
+
+    private void setLastUpdate() {
+        this.lastUpdate = LocalDateTime.now();
     }
 }

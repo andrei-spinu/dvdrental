@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,14 +39,21 @@ public class FilmCategory implements Serializable {
     private Film film;
 
     @Column(name = "last_update")
+    @Setter(AccessLevel.NONE)
     private LocalDateTime lastUpdate;
 
     public FilmCategory() {
+        this.setLastUpdate();
     }
 
     public FilmCategory(Category category, Film film) {
         this.category = category;
         this.film = film;
         this.id = new FilmCategoryId(category.getId(),film.getId());
+        this.setLastUpdate();
+    }
+
+    private void setLastUpdate() {
+        this.lastUpdate = LocalDateTime.now();
     }
 }

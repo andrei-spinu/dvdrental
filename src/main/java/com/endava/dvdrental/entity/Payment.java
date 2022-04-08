@@ -1,8 +1,7 @@
 package com.endava.dvdrental.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +35,7 @@ public class Payment implements Serializable {
     @NotNull
     @Column(name = "payment_date",
             nullable = false)
+    @Setter(AccessLevel.NONE)
     private LocalDateTime paymentDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,7 +45,7 @@ public class Payment implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_id")
-    @JsonIgnoreProperties({"address", "store", "rentalSet","paymentSet"})
+    @JsonIgnoreProperties({"address", "store", "rentalSet", "paymentSet"})
     private Staff staff;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -54,5 +54,10 @@ public class Payment implements Serializable {
     private Customer customer;
 
     public Payment() {
+        this.setPaymentDate();
+    }
+
+    public void setPaymentDate() {
+        this.paymentDate = LocalDateTime.now();
     }
 }
